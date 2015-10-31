@@ -1,0 +1,28 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Astro Form</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  {{ > App }}
+</body>
+
+<template name="App">
+  <!-- If action create, we use an empty model instance we create -->
+  <h1>Create</h1>
+  {{ > PostForm action="create" }}
+
+  <!-- If action update, we need to be given a model instance -->
+  <h1>Update</h1>
+ <!-- {{ > PostForm for=post action="update"}}-->
+
+  <!-- If no action is given will use the action given JS side -->
+  <h1>Infered, custom action</h1>
+<!--  {{ > PostForm }}-->
+
+  <!-- If action custom, will use the action function provided -->
+  <h1>Custom action</h1>
+  <!--{{ > PostForm action="custom" }}-->
+</template>

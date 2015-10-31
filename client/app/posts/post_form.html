@@ -1,0 +1,26 @@
+<template name="PostForm">
+  <form action="create">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" class="form-input input-text" name="title" id="title">
+    </div>
+    <div class="form-group">
+      <label for="content">Content</label>
+      <textarea class="form-area" name="content" id="title"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="radio">Radio</label>
+      <input type="radio" value="Yes" name="radio">
+      <input type="radio" value="Maybe" name="radio">
+      <input type="radio" value="No" name="radio">
+    </div>
+    <div class="form-group">
+      <label for="radio">Checkbox</label>
+      <input type="checkbox" name="checkbox">
+    </div>
+
+
+    <button>Submit</button>
+  </form>
+  {{ showMustache }}
+</template>
