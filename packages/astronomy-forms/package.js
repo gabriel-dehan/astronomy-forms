@@ -22,8 +22,12 @@ Package.onUse(function(api) {
 
   api.imply('jagi:astronomy');
 
-  api.addFiles('astroform-utility.js');
-  api.addFiles('astronomy-forms.js');
+  api.addFiles('lib/astroform-utility.js');
+  api.addFiles('lib/astroform-errors.js');
+  api.addFiles('lib/astroform-model.js');
+  api.addFiles('lib/astroform-template.js');
+  api.addFiles('lib/astroform-form.js');
+  api.addFiles('astro-form.js');
 
   api.export('AstroForm');
 });

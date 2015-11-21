@@ -3,8 +3,8 @@ console.log('Hello');
 PostForm = AstroForm.create('PostForm', {
   model: 'App.Post',
   //action: 'create',
-  action: function(event, template) {
-  }
+  /*action: function(event, template) {
+  }*/
 });
 
 PostForm.helpers({
@@ -16,14 +16,11 @@ PostForm.helpers({
 });
 
 PostForm.events({
-  'click': function(e, t) {
-    console.log('clicked', e, t, this);
-  },
   'beforeValidate': function(e, t) {
     console.log('beforeValidate called', this, t.form);
   },
   'afterValidate': function(e, t) {
-    console.log('afterValidate called', this, t.form);
+    console.log('afterValidate called', this, t.form, t.form.errors());
   }
 });
 
