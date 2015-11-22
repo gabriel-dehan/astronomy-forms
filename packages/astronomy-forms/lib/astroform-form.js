@@ -27,6 +27,11 @@ FormMixin = stampit()
       this.form.model = self.getModel();
       this.form.hasRecord = self.hasRecord;
 
+      this.form.showErrors = self.options.displayErrors || true;
+      this.form.displayErrors = self.displayErrors; // function
+      this.form.clearErrors = self.clearErrors; // function
+      this.form.__submittedOnce = false;
+
       // If we are using an Astronomy Model we override the form's error handling to include the record
       if (this.form.hasRecord) {
         // form.validate() now validates the form and the record
@@ -132,7 +137,6 @@ FormMixin = stampit()
       'propertyChange': function(e, t, changes) {
         t.form.change(changes, e.currentTarget, e);
 
-//        console.log(changes);
         let el    = $(e.currentTarget);
         let name  = el.attr('name');
         let value = null;
@@ -147,11 +151,18 @@ FormMixin = stampit()
 
         if(t.form.model && t.form.record) {
           let fields = t.form.model.getFieldsNames();
+
           if (_.contains(fields, name)) {
             t.form.record[name] = value;
           } else {
             console.warn(`AstroForm::AttributeDoesNotExist: Trying to access attribute '${name}' on model ${t.form.model.getName()}, but it is nowhere to be found.`);
           }
+        }
+
+        // Display Errors
+        if (t.form.showErrors === true || t.form.showErrors === "onPropertyChanged") {
+          t.form.validate(); // We validate the form to get the errors
+          t.form.displayErrors(e, t, changes);
         }
       },
 
@@ -164,54 +175,60 @@ FormMixin = stampit()
 
       // documentSubmit is called when the form AND the record are valid
       'documentSubmit': function(e, t) {
-        let form    = t.form;
-
-        console.log('Valid', form.action);
-        switch(form.action) {
-        case 'create':
-          // TODO: VALIDATE
-          if (t.form.record) {
-            debugger;
-            return t.form.record.save();
-          }
-          console.log('Create', t.form.model, t.form.record);
-          break;
-        case 'update':
-          // TODO: VALIDATE
-          console.log('Update', t.form.model, t.form.record);
-          break;
-        case 'custom':
-          console.log('Custom');
-          // TODO: VALIDATE what does actionFunc returns ?
-          return form._actionFunc.call(this, e, t);
-          break;
-        }
+        console.log('submit');
+        return self.__actUponAction(true, e, t);
       },
 
       // Called when form, record or both are invalid
       'documentInvalid': function(e, t) {
-        let form    = t.form;
-
-        console.log('Invalid', form.action);
-        switch(form.action) {
-        case 'create':
-          // TODO: VALIDATE
-          if (t.form.record) {
-          }
-          console.log('Create', t.form.model, t.form.record);
-          break;
-        case 'update':
-          // TODO: VALIDATE
-          console.log('Update', t.form.model, t.form.record);
-          break;
-        case 'custom':
-          console.log('Custom');
-          // TODO: VALIDATE what does actionFunc returns ?
-          isValid = form._actionFunc.call(this, e, t);
-          break;
-        }
+        return self.__actUponAction(false, e, t);
       }
     });
   })
   .methods({
+    /* Public: Basic error display
+     *
+     * Returns nothing.
+     */
+    displayErrors: function(e, t, changes) {
+      let form = t.form;
+
+      if (form.showErrors && form.__submittedOnce) {
+        if (form.errors().length === 0) {
+          form.clearErrors(t);
+        }
+        console.log('display errors', form.errors())
+        _.each(form.errors(), function(error) {
+          if (changes && _.contains(Object.keys(changes), error.name)) {
+            t.$(`[name=${error.name}]`).addClass('has-error');
+          } else if (!changes) {
+            t.$(`[name=${error.name}]`).addClass('has-error');
+          }
+        });
+      }
+    },
+    clearErrors: function(t) {
+      t.$('.has-error').removeClass('has-error');
+      // blah
+    },
+    /* Private: saves the record and do what is needed for a given action (create, update, custom).
+     * Returns the return value of record.save() or the return value of the action function.
+     */
+    __actUponAction: function(documentValid, submitEvent, t) {
+      let form    = t.form;
+      console.log('Document valid ? ', documentValid, form.action, form.model, form.record);
+
+      if (form.action === 'create' || form.action === 'update') {
+        if (form.record && documentValid) {
+          return form.record.save();
+        } else {
+          form.__submittedOnce = true; // Activate error display
+          if (t.form.showErrors === true || t.form.showErrors === "afterSubmit") {
+            form.displayErrors(submitEvent, t);
+          }
+        }
+      } else if (form.action === 'custom') {
+        return form._actionFunc.call(this, e, t, documentValid);
+      }
+    }
   });
