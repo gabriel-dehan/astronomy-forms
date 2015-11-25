@@ -16,17 +16,16 @@ Package.onUse(function(api) {
   api.use('fourseven:scss');
   api.use('stampitorg:stampit');
   api.use('useful:forms@1.0.3');
-  api.use('jagi:astronomy');
+  api.use('jagi:astronomy@1.2.4');
   api.use('jagi:astronomy-validators');
-
 
   api.imply('jagi:astronomy');
 
   api.addFiles('lib/astroform-utility.js');
-  api.addFiles('lib/astroform-errors.js');
-  api.addFiles('lib/astroform-model.js');
-  api.addFiles('lib/astroform-template.js');
-  api.addFiles('lib/astroform-form.js');
+  api.addFiles('lib/errors.js');
+  api.addFiles('lib/model.js');
+  api.addFiles('lib/template.js');
+  api.addFiles('lib/form.js');
   api.addFiles('astro-form.js');
 
   api.export('AstroForm');

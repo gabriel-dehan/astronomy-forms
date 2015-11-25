@@ -9,6 +9,14 @@ UserProfile = Astro.Class({
 App.User = Astro.Class({
   name: 'User',
   collection: Meteor.users,
+  relations: {
+    posts: {
+      type: 'many',
+      class: 'Post',
+      local: '_id',
+      foreign: 'user_id'
+    }
+  },
   fields: {
     createdAt: 'date',
     emails: {

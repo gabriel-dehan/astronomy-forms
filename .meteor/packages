@@ -25,17 +25,20 @@ ejson
 autopublish             # Publish all data to the clients (for prototyping)
 insecure                # Allow all DB writes from clients (for prototyping)
 accounts-base
+accounts-password
 
 aldeed:console-me
 reactive-var
 fourseven:scss
 meteortoys:allthings
 
-jagi:astronomy
 
 meteorhacks:flow-components
 
-diacred:astronomy-forms
+jagi:astronomy@1.2.0
 jagi:astronomy-validators
+astronomy-relations
 jagi:astronomy-timestamp-behavior
 jagi:astronomy-softremove-behavior
+
+diacred:astronomy-forms

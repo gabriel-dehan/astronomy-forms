@@ -1,7 +1,5 @@
 AstroForm = AstroForm || {}
 
-// TODO: CAREFUL REFS ARE REFERENCES SHARED FOR EACH INSTANCE, PROPS ARE DUPLICATED FOR EACH INSTANCE
-
 AstroForm.create = (function(templateName, options) {
   console.log(TemplateMixin, FormMixin);
   Form = stampit.compose(TemplateMixin, FormMixin);
