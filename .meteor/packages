@@ -27,6 +27,7 @@ insecure                # Allow all DB writes from clients (for prototyping)
 accounts-base
 accounts-password
 
+ramda:ramda
 aldeed:console-me
 reactive-var
 fourseven:scss

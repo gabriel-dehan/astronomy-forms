@@ -7,11 +7,11 @@
   <form action="create">
     <div class="form-group">
       <label for="title">Title</label>
-      <input type="text" class="form-input input-text" name="title" id="title">
+      <input type="text" class="form-input input-text" name="title" id="title" value="{{ doc.title }}">
     </div>
     <div class="form-group">
       <label for="content">Content</label>
-      <textarea class="form-area" name="content" id="title"></textarea>
+      <textarea class="form-area" name="content" id="content">{{ doc.content }}</textarea>
     </div>
     <div class="form-group">
       <label for="radio">Radio</label>
@@ -30,8 +30,10 @@
 
     <div class="form-group nested">
       <h2>Tags</h2>
-      <input type="text" name="post.tags.0">
-      <input type="text" name="post.tags.1">
+      {{ #each doc.tags }}
+        <input type="text" name="tags.{{ index }}.label" value="{{ label }}">
+      {{ /each }}
+      <input type="text" name="tags[label]">
     </div>
 
     <button>Submit</button>

@@ -1,6 +1,6 @@
 Meteor.startup(function(){
   // Create a demo user
   if (Meteor.users.find().count() === 0) {
-    Accounts.createUser({'username': 'demo', 'password': 'password'});
+    a = Accounts.createUser({'username': 'demo', 'email': "email@email.com", 'password': 'password'});
   }
 });

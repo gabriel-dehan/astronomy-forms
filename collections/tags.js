@@ -1,32 +1,26 @@
-App.Posts = new Mongo.Collection('posts');
+App.Tags = new Mongo.Collection('tags');
 
-App.Post = Astro.Class({
-  name: 'Post',
-  collection: App.Posts,
+App.Tag = Astro.Class({
+  name: 'Tag',
+  collection: App.Tags,
   behaviors: ['timestamp', 'softremove'],
   relations: {
-    tags: {
-      type: 'many',
-      class: 'Tag',
-      local: '_id',
-      foreign: 'post_id'
-    },
-    user: {
+    post: {
       type: 'one',
-      class: 'User',
-      local: 'user_id',
+      class: 'Post',
+      local: 'post_id',
       foreign: '_id'
     }
   },
   fields: {
-    user_id: {
+    post_id: {
       type: 'string',
       validator: [
         Validators.string(),
         Validators.required()
       ]
     },
-    title: {
+    label: {
       type: 'string',
       validator: [
         Validators.string(),
@@ -35,7 +29,6 @@ App.Post = Astro.Class({
         Validators.maxLength(40)
       ]
     },
-    content: 'string',
-    publishedAt: 'date'
+    createdAt: 'date'
   }
 });

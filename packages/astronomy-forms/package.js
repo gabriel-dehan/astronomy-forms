@@ -14,6 +14,7 @@ Package.onUse(function(api) {
   api.versionsFrom('1.2.0.2');
   api.use(['ecmascript', 'reactive-var', 'reactive-dict', 'check', 'blaze-html-templates', 'ui', 'underscore', 'jquery', 'random', 'ejson', 'tracker']);
   api.use('fourseven:scss');
+  api.use('ramda:ramda');
   api.use('stampitorg:stampit');
   api.use('useful:forms@1.0.3');
   api.use('jagi:astronomy@1.2.4');
@@ -21,6 +22,7 @@ Package.onUse(function(api) {
 
   api.imply('jagi:astronomy');
 
+  api.addFiles('lib/tools/record.js');
   api.addFiles('lib/astroform-utility.js');
   api.addFiles('lib/errors.js');
   api.addFiles('lib/model.js');

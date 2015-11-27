@@ -1,5 +1,3 @@
-console.log('Hello');
-
 PostForm = AstroForm.create('PostForm', {
   model: 'App.Post',
   displayErrors: true, // onPropertyChanged || afterSubmit || false || true (default)
@@ -18,12 +16,15 @@ PostForm.helpers({
 
 PostForm.events({
   'beforeValidate': function(e, t) {
-    console.log('beforeValidate called', this, t.form);
-    // t.form.action === "update"
+    if (t.form.action === "create") {
+      t.form.record.set('user_id', Meteor.userId());
+    }
+    console.log('beforeValidate called', this, t.form.record, t.form.action, t.form.record.user);
+    // t.form.action === "update" || "create"
   },
   'afterValidate': function(e, t) {
     console.log('afterValidate called', this, t.form, t.form.errors());
-    // t.form.action === "create"
+    // t.form.action === "create" || "update"
   }
 });
 

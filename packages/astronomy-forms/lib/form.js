@@ -66,21 +66,19 @@ FormMixin = stampit()
 
           return formErrors.concat(recordErrors);
         });
-      }
+      } // If has record
 
       // Action is Custom or non given (template side)
-      if (templateAction !== 'create' || templateAction !== 'update') {
+      if (!(templateAction === 'create' || templateAction === 'update')) {
+        // Action has to be custom if not create or update
+        this.form.action = 'custom';
+        self.action = this.form.action;
+
         // We set the actionFunction if need be
-        if (viewAction && _.isFunction(viewAction)) {
-          this.form.action = 'custom';
+        if (_.isFunction(viewAction)) {
           this.form._actionFunc = self.action;
-        } else if (templateAction === 'custom') {
-          if (_.isFunction(self.action)) {
-            self.action = 'custom';
-            this.form._actionFunc = self.action;
-          } else {
-            throw new ActionFunctionMissing();
-          }
+        } else {
+          throw new ActionFunctionMissing();
         }
       }
 
@@ -90,14 +88,23 @@ FormMixin = stampit()
         this.autorun(function() {
           instance.form.record = Template.currentData().for; // Once form has loaded
           self.record = instance.form.record; // Just set it on our Stampit Form
+
+          if (self.record) {
+            // Populate form.doc TODO: Refactor
+            let doc = Tools.Record.toDoc(instance.form.record, instance.form.model);
+            instance.form.doc(R.merge(doc, instance.form.doc));
+          }
         });
 
-        if (_.isUndefined(this.form._actionFunc)) {
+        if (_.isUndefined(this.form._actionFunc) && this.form.action === 'custom') {
           throw new RecordOrActionMissing();
         }
       } else if ((viewAction === 'create' || templateAction === 'create') && this.form.model) {
         self.record = new this.form.model;
         instance.form.record = self.record;
+        // Populate form.doc TODO: Refactor
+        let doc = Tools.Record.toDoc(instance.form.record, instance.form.model);
+        instance.form.doc(R.merge(doc, instance.form.doc));
       }
 
       // We check if we have at least a record or an action
